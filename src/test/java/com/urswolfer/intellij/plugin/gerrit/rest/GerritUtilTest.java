@@ -125,16 +125,23 @@ public class GerritUtilTest {
                 ));
 
         Assert.assertEquals("project/blah/test",
-                getProjectName.invoke(gerritUtil,
-                        "http://gerrit.server/r",
-                        "http://gerrit.server/r/project/blah/test.git"
-                ));
+            getProjectName.invoke(gerritUtil,
+                "http://gerrit.server/r",
+                "http://gerrit.server/r/project/blah/test.git"
+            ));
+
+        // specific case where gerrit URL is provided via HTTP but git is configured to use ssh
+        Assert.assertEquals("project/blah",
+            getProjectName.invoke(gerritUtil,
+                "http://gerrit.server/gerrit",
+                "ssh://git@gerrit.server:29418/project/blah"
+            ));
 
         // should not fail with an StringIndexOutOfBoundsException
         Assert.assertEquals("",
-                getProjectName.invoke(gerritUtil,
-                        "http://gerrit.server",
-                        "http://gerrit.server"
-                ));
+            getProjectName.invoke(gerritUtil,
+                "http://gerrit.server",
+                "http://gerrit.server"
+            ));
     }
 }
